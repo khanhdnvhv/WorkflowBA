@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Quy trình sản xuất mới của BA VHV</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+body {
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #e0f2fe 0%, #f0fdf4 40%, #fef9c3 70%, #fce7f3 100%);
+  padding: 48px 20px 80px;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Decorative blobs */
+body::before {
+  content: '';
+  position: fixed; top: -120px; left: -120px;
+  width: 480px; height: 480px;
+  background: radial-gradient(circle, rgba(99,102,241,0.18) 0%, transparent 70%);
+  border-radius: 50%; pointer-events: none; z-index: 0;
+}
+body::after {
+  content: '';
+  position: fixed; bottom: -140px; right: -100px;
+  width: 520px; height: 520px;
+  background: radial-gradient(circle, rgba(16,185,129,0.15) 0%, transparent 70%);
+  border-radius: 50%; pointer-events: none; z-index: 0;
+}
+
+/* ══ HEADER ══ */
+.hd { text-align: center; margin-bottom: 52px; position: relative; z-index: 1; }
+
+.hd .badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #fff;
+  font-size: 11px; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 7px 20px; border-radius: 30px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 16px rgba(99,102,241,0.35);
+}
+
+.hd h1 {
+  font-size: clamp(22px, 3.5vw, 40px);
+  font-weight: 900;
+  background: linear-gradient(135deg, #6366f1 0%, #ec4899 50%, #f59e0b 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.2; margin-bottom: 10px;
+  filter: drop-shadow(0 2px 8px rgba(99,102,241,0.15));
+}
+.hd p { color: #64748b; font-size: 14px; font-weight: 500; }
+
+/* ══ FLOW ══ */
+.flow {
+  display: flex; flex-direction: column; align-items: center;
+  max-width: 900px; margin: 0 auto; position: relative; z-index: 1;
+}
+
+/* ══ NODES BASE ══ */
+.node {
+  border-radius: 18px;
+  padding: 16px 28px;
+  font-size: 14px; font-weight: 600;
+  text-align: center; width: 370px; max-width: 92vw;
+  border: 1.5px solid rgba(255,255,255,0.9);
+  transition: transform .22s ease, box-shadow .22s ease;
+  cursor: default; line-height: 1.5;
+  backdrop-filter: blur(12px);
+}
+.node:hover { transform: translateY(-4px) scale(1.025); }
+.ni { font-size: 20px; margin-bottom: 5px; display: block; }
+
+/* node types */
+.n-start {
+  background: linear-gradient(135deg, rgba(99,102,241,0.12), rgba(139,92,246,0.12));
+  border-color: #6366f1;
+  box-shadow: 0 8px 32px rgba(99,102,241,0.2), inset 0 1px 0 rgba(255,255,255,0.8);
+  color: #4338ca;
+  animation: pulse-ind 2.8s ease-in-out infinite;
+}
+.n-end {
+  background: linear-gradient(135deg, rgba(16,185,129,0.12), rgba(5,150,105,0.12));
+  border-color: #10b981;
+  box-shadow: 0 8px 32px rgba(16,185,129,0.22), inset 0 1px 0 rgba(255,255,255,0.8);
+  color: #065f46; width: 430px;
+  animation: pulse-grn 2.8s ease-in-out infinite;
+}
+.n-doc {
+  background: linear-gradient(135deg, rgba(168,85,247,0.1), rgba(139,92,246,0.1));
+  border-color: #a855f7;
+  box-shadow: 0 6px 24px rgba(168,85,247,0.18), inset 0 1px 0 rgba(255,255,255,0.8);
+  color: #6b21a8;
+}
+.n-act {
+  background: linear-gradient(135deg, rgba(6,182,212,0.1), rgba(14,165,233,0.1));
+  border-color: #06b6d4;
+  box-shadow: 0 6px 24px rgba(6,182,212,0.18), inset 0 1px 0 rgba(255,255,255,0.8);
+  color: #0e7490;
+}
+.n-tool {
+  background: linear-gradient(135deg, rgba(245,158,11,0.1), rgba(251,191,36,0.1));
+  border-color: #f59e0b;
+  box-shadow: 0 5px 20px rgba(245,158,11,0.18), inset 0 1px 0 rgba(255,255,255,0.8);
+  color: #92400e; width: 255px;
+  font-size: 13px;
+}
+.n-loop {
+  background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(236,72,153,0.08));
+  border-color: #6366f1;
+  box-shadow: 0 8px 28px rgba(99,102,241,0.2), inset 0 1px 0 rgba(255,255,255,0.8);
+  color: #3730a3; width: 460px;
+}
+.n-rev {
+  background: linear-gradient(135deg, rgba(239,68,68,0.1), rgba(236,72,153,0.1));
+  border-color: #ef4444;
+  box-shadow: 0 6px 22px rgba(239,68,68,0.18), inset 0 1px 0 rgba(255,255,255,0.8);
+  color: #991b1b;
+}
+.n-ide {
+  background: linear-gradient(135deg, rgba(16,185,129,0.1), rgba(5,150,105,0.08));
+  border-color: #10b981;
+  box-shadow: 0 6px 22px rgba(16,185,129,0.18), inset 0 1px 0 rgba(255,255,255,0.8);
+  color: #064e3b; width: 440px;
+}
+
+@keyframes pulse-ind {
+  0%,100%{box-shadow:0 8px 32px rgba(99,102,241,.2),inset 0 1px 0 rgba(255,255,255,.8)}
+  50%{box-shadow:0 8px 48px rgba(99,102,241,.4),inset 0 1px 0 rgba(255,255,255,.8)}
+}
+@keyframes pulse-grn {
+  0%,100%{box-shadow:0 8px 32px rgba(16,185,129,.22),inset 0 1px 0 rgba(255,255,255,.8)}
+  50%{box-shadow:0 8px 48px rgba(16,185,129,.42),inset 0 1px 0 rgba(255,255,255,.8)}
+}
+
+/* ══ DIAMOND ══ */
+.dmw { width: 380px; max-width: 92vw; }
+.dmi {
+  background: linear-gradient(135deg, rgba(6,182,212,0.12), rgba(14,165,233,0.15));
+  border: 2px solid #06b6d4;
+  box-shadow: 0 8px 32px rgba(6,182,212,0.22), inset 0 1px 0 rgba(255,255,255,0.9);
+  color: #0e7490;
+  font-size: 13.5px; font-weight: 700; text-align: center;
+  padding: 18px 24px;
+  clip-path: polygon(50% 0%,100% 50%,50% 100%,0% 50%);
+  min-height: 124px; display: flex; align-items: center; justify-content: center;
+  transition: transform .22s; cursor: default; line-height: 1.45;
+  backdrop-filter: blur(12px);
+}
+.dmi:hover { transform: scale(1.05); box-shadow: 0 12px 40px rgba(6,182,212,.35); }
+
+/* ══ MAIN ARROWS ══ */
+.arr {
+  width: 3px; min-height: 32px;
+  background: linear-gradient(to bottom, #6366f1, #a855f7);
+  position: relative; align-self: center; flex-shrink: 0;
+  border-radius: 2px;
+}
+.arr::after {
+  content: ''; position: absolute;
+  bottom: -8px; left: 50%; transform: translateX(-50%);
+  border-left: 7px solid transparent; border-right: 7px solid transparent;
+  border-top: 9px solid #a855f7;
+}
+
+/* ══ BRANCH WRAP ══ */
+.branch-wrap { width: 700px; max-width: 92vw; }
+
+/* FORK TOP */
+.fork-top { position: relative; height: 30px; }
+.fork-top::before {
+  content: ''; position: absolute;
+  top: 0; left: 25%; right: 25%; height: 3px;
+  background: linear-gradient(to right, #10b981 50%, #f59e0b 50%);
+  border-radius: 2px;
+}
+.fork-top::after {
+  content: ''; position: absolute;
+  top: 0; right: calc(25% - 1.5px); width: 3px; height: 100%;
+  background: linear-gradient(to bottom, #f59e0b, #d97706);
+}
+.fork-stub-yes {
+  position: absolute;
+  top: 0; left: calc(25% - 1.5px); width: 3px; height: 100%;
+  background: linear-gradient(to bottom, #10b981, #059669);
+}
+
+/* BRANCH COLS */
+.branch-cols { display: flex; align-items: stretch; }
+.col-yes {
+  flex: 1; display: flex; flex-direction: column; align-items: center;
+  padding-top: 14px;
+}
+.yes-line {
+  flex: 1; width: 3px; min-height: 20px;
+  background: linear-gradient(to bottom, #10b981, #059669);
+  border-radius: 2px;
+}
+.col-no {
+  flex: 1; display: flex; flex-direction: column; align-items: center;
+  padding-top: 10px;
+}
+.col-no .n-tool { width: 255px; max-width: 90%; }
+
+/* Branch labels */
+.blbl {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 700; letter-spacing: 1px;
+  padding: 5px 16px; border-radius: 20px; margin-bottom: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+.lyes {
+  background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+  border: 1.5px solid #10b981; color: #065f46;
+}
+.lno {
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  border: 1.5px solid #f59e0b; color: #92400e;
+}
+
+/* Small arrows inside KHÔNG col */
+.arr-no {
+  width: 3px; min-height: 18px;
+  background: linear-gradient(to bottom, #f59e0b, #d97706);
+  position: relative; margin: 0 auto; flex-shrink: 0; border-radius: 2px;
+}
+.arr-no::after {
+  content: ''; position: absolute;
+  bottom: -7px; left: 50%; transform: translateX(-50%);
+  border-left: 6px solid transparent; border-right: 6px solid transparent;
+  border-top: 8px solid #d97706;
+}
+
+/* MERGE BOTTOM */
+.merge-bot {
+  position: relative; height: 30px;
+}
+.merge-bot::before {
+  content: ''; position: absolute;
+  bottom: 0; left: 25%; right: 25%; height: 3px;
+  background: linear-gradient(to right, #10b981 50%, #6366f1 50%);
+  border-radius: 2px;
+}
+.merge-bot::after {
+  content: ''; position: absolute;
+  bottom: 0; right: calc(25% - 1.5px); width: 3px; height: 100%;
+  background: linear-gradient(to top, #6366f1, #3b82f6);
+}
+.merge-stub-yes {
+  position: absolute;
+  bottom: 0; left: calc(25% - 1.5px); width: 3px; height: 100%;
+  background: linear-gradient(to top, #10b981, #059669);
+}
+.merge-arrow {
+  position: absolute; bottom: -9px; left: 50%; margin-left: -7px;
+  border-left: 7px solid transparent; border-right: 7px solid transparent;
+  border-top: 9px solid #6366f1;
+}
+
+/* ══ IDE IMPORTS ══ */
+.imp-list { display: flex; flex-direction: column; gap: 7px; margin-top: 12px; }
+.imp-item {
+  display: flex; align-items: center; gap: 9px;
+  background: rgba(255,255,255,0.7); backdrop-filter: blur(8px);
+  border: 1px solid rgba(16,185,129,0.25);
+  border-radius: 10px; padding: 7px 13px;
+  font-size: 12.5px; font-weight: 500; color: #064e3b;
+  box-shadow: 0 2px 8px rgba(16,185,129,0.1);
+}
+
+/* ══ LOOP CHIPS ══ */
+.lp-steps { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 12px; }
+.lp-chip {
+  background: rgba(255,255,255,0.75); backdrop-filter: blur(8px);
+  border: 1.5px solid rgba(99,102,241,0.3);
+  border-radius: 10px; padding: 6px 13px;
+  font-size: 12px; font-weight: 600; color: #3730a3;
+  box-shadow: 0 2px 8px rgba(99,102,241,0.12);
+  transition: transform .15s;
+}
+.lp-chip:hover { transform: translateY(-2px); }
+
+/* ══ STEP NUMBER BADGE ══ */
+.step-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: currentColor; font-size: 11px; font-weight: 800;
+  margin-right: 6px; flex-shrink: 0;
+}
+
+/* ══ SECTION DIVIDER LABEL ══ */
+.section-tag {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 10px; font-weight: 700; letter-spacing: 1.5px;
+  text-transform: uppercase; color: #94a3b8;
+  margin: 4px 0 2px;
+}
+.section-tag::before, .section-tag::after {
+  content: ''; flex: 1; height: 1px; background: #e2e8f0; min-width: 30px;
+}
+
+/* ══ LEGEND ══ */
+.legend {
+  display: flex; flex-wrap: wrap; gap: 12px; justify-content: center;
+  margin-top: 56px; max-width: 700px; margin-left: auto; margin-right: auto;
+  position: relative; z-index: 1;
+}
+.li { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #64748b; font-weight: 500; }
+.ld { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+
+/* ══ CARD SHINE on hover ══ */
+.node::before {
+  content: ''; position: absolute; inset: 0; border-radius: inherit;
+  background: linear-gradient(105deg, rgba(255,255,255,0) 40%, rgba(255,255,255,0.35) 50%, rgba(255,255,255,0) 60%);
+  background-size: 200%;
+  background-position: -100%;
+  transition: background-position .5s;
+  pointer-events: none;
+}
+.node { position: relative; overflow: hidden; }
+.node:hover::before { background-position: 150%; }
+</style>
+</head>
+<body>
+
+<!-- ════ HEADER ════ -->
+<div class="hd">
+  <div class="badge">🏢 VHV Corporation</div>
+  <h1>Quy trình sản xuất mới của BA VHV</h1>
+  <p>Từ Yêu Cầu Dự Án → Frontend Prototype Hoàn Chỉnh</p>
+</div>
+
+<!-- ════ MAIN FLOW ════ -->
+<div class="flow">
+
+  <!-- 1. START -->
+  <div class="node n-start">
+    <span class="ni">🚀</span>
+    <strong>Bắt đầu:</strong> Yêu cầu dự án
+  </div>
+  <div class="arr" style="min-height:36px"></div>
+
+  <!-- 2. US & AC -->
+  <div class="node n-doc">
+    <span class="ni">📄</span>
+    Thiết lập tài liệu<br/>
+    <strong>User Story &amp; Acceptance Criteria</strong>
+  </div>
+  <div class="arr" style="min-height:36px"></div>
+
+  <!-- 3. DECISION -->
+  <div class="dmw">
+    <div class="dmi">
+      <span>🔍 Kho Figma Make VHV<br/>có UI dự án tương tự không?</span>
+    </div>
+  </div>
+
+  <!-- ══ BRANCHES ══ -->
+  <div class="branch-wrap">
+
+    <!-- Fork top -->
+    <div class="fork-top">
+      <div class="fork-stub-yes"></div>
+    </div>
+
+    <!-- Columns -->
+    <div class="branch-cols">
+
+      <!-- LEFT: CÓ -->
+      <div class="col-yes">
+        <div class="blbl lyes">✅ CÓ</div>
+        <div class="yes-line"></div>
+      </div>
+
+      <!-- RIGHT: KHÔNG -->
+      <div class="col-no">
+        <div class="blbl lno">❌ KHÔNG</div>
+        <div class="arr-no" style="min-height:16px"></div>
+
+        <div class="node n-tool">
+          <span class="ni">✨</span>
+          <strong>Stitch:</strong> Nhập Prompt / Ý tưởng sơ bộ
+        </div>
+        <div class="arr-no" style="min-height:16px"></div>
+
+        <div class="node n-tool">
+          <span class="ni">🎨</span>Stitch gen ra Design ban đầu
+        </div>
+        <div class="arr-no" style="min-height:16px"></div>
+
+        <div class="node n-tool">
+          <span class="ni">🔄</span>Chuyển đổi Design Stitch<br/>→ Figma Design
+        </div>
+        <div class="arr-no" style="min-height:16px"></div>
+
+        <div class="node n-tool">
+          <span class="ni">🖼️</span>Figma: Tinh chỉnh Design nếu cần
+        </div>
+        <div class="arr-no" style="min-height:16px"></div>
+
+        <div class="node n-tool">
+          <span class="ni">⚙️</span>Figma Make: Import Design
+        </div>
+        <div class="arr-no" style="min-height:16px"></div>
+
+        <div class="node n-tool">
+          <span class="ni">💻</span>Figma Make gen ra Source Code FE
+        </div>
+        <div style="flex:1;width:3px;min-height:14px;background:linear-gradient(to bottom,#d97706,#6366f1);align-self:center;border-radius:2px"></div>
+      </div>
+
+    </div>
+
+    <!-- Merge bottom -->
+    <div class="merge-bot">
+      <div class="merge-stub-yes"></div>
+      <div class="merge-arrow"></div>
+    </div>
+  </div><!-- /branch-wrap -->
+
+  <!-- Arrow merge → download -->
+  <div class="arr" style="min-height:28px"></div>
+
+  <!-- 5. DOWNLOAD -->
+  <div class="node n-act">
+    <span class="ni">⬇️</span>
+    <strong>Hành động:</strong> Tải Source Code về
+  </div>
+  <div class="arr" style="min-height:36px"></div>
+
+  <!-- 6. AI IDE -->
+  <div class="node n-ide">
+    <span class="ni">🤖</span>
+    <strong>Môi trường AI IDE</strong>
+    <div style="font-size:12px;color:#065f46;margin-top:3px;font-weight:500">VS Code &nbsp;/&nbsp; Antigravity &nbsp;/&nbsp; Claude Code</div>
+    <div class="imp-list">
+      <div class="imp-item">📦 Import Source Code (từ Figma Make)</div>
+      <div class="imp-item">📋 Import Tài liệu (User Story, Acceptance Criteria)</div>
+    </div>
+  </div>
+  <div class="arr" style="min-height:36px"></div>
+
+  <!-- 7. VIBE CODE -->
+  <div class="node n-loop">
+    <span class="ni">🔁</span>
+    <strong>Vòng lặp "Vibe Code" – Prompting AI</strong>
+    <div class="lp-steps">
+      <div class="lp-chip">📖 Đọc tài liệu</div>
+      <div class="lp-chip">⚡ Viết logic</div>
+      <div class="lp-chip">🖱️ Thêm tương tác</div>
+      <div class="lp-chip">🐛 Fix lỗi</div>
+      <div class="lp-chip">🗄️ DB Schema</div>
+      <div class="lp-chip">💡 Brainstorm tài liệu phân tích</div>
+    </div>
+  </div>
+  <div class="arr" style="min-height:36px"></div>
+
+  <!-- 8. BA REVIEW -->
+  <div class="node n-rev">
+    <span class="ni">🔍</span>
+    <strong>BA Review</strong> + Demo Stakeholder
+  </div>
+  <div class="arr" style="min-height:36px"></div>
+
+  <!-- 9. END -->
+  <div class="node n-end">
+    <span class="ni">🏁</span>
+    <strong>Kết thúc</strong><br/>
+    Ra được Frontend và tài liệu phân tích<br/>
+    <span style="font-size:13px;font-weight:500;opacity:0.85">(US + AC) hoàn chỉnh đáp ứng dự án<br/>sẵn sàng cho đội BE</span>
+  </div>
+
+</div><!-- /flow -->
+
+<!-- ════ LEGEND ════ -->
+<div class="legend">
+  <div class="li"><div class="ld" style="background:linear-gradient(135deg,#6366f1,#8b5cf6)"></div>Bắt đầu / Kết thúc</div>
+  <div class="li"><div class="ld" style="background:linear-gradient(135deg,#a855f7,#7c3aed)"></div>Tài liệu</div>
+  <div class="li"><div class="ld" style="background:linear-gradient(135deg,#06b6d4,#0ea5e9)"></div>Hành động</div>
+  <div class="li"><div class="ld" style="background:linear-gradient(135deg,#f59e0b,#fbbf24)"></div>Công cụ thiết kế</div>
+  <div class="li"><div class="ld" style="background:linear-gradient(135deg,#10b981,#059669)"></div>AI IDE</div>
+  <div class="li"><div class="ld" style="background:linear-gradient(135deg,#6366f1,#ec4899)"></div>Vòng lặp AI</div>
+  <div class="li"><div class="ld" style="background:linear-gradient(135deg,#ef4444,#ec4899)"></div>Review / QA</div>
+</div>
+
+</body>
+</html>

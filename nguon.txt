@@ -1,0 +1,50 @@
+    [Bắt đầu:Yêu cầu dự án]
+            │
+            ▼
+[Thiết lập tài liệu US & AC]
+          │
+          ▼
+< Quyết định: Kho Figma Make VHV có UI dự án tương tự không? >
+          │
+    ┌─────┴─────┐
+    │           │
+  [CÓ]        [KHÔNG]
+    │           │
+    │           ▼
+    │      [Dùng Stitch: Nhập Prompt/Ý tưởng sơ bộ]
+    │           │
+    │           ▼
+    │      [Stitch gen ra Design ban đầu]
+    │           │
+    │           ▼
+    │      [Chuyển đổi design stitch sang figma design]
+    │           │
+    │           ▼ 
+    │      [Môi trường Figma: Tinh chỉnh Design nếu cần] 
+    │           │
+    │           ▼
+    │      [Công cụ Figma Make: Import Design]
+    │           │
+    │           ▼
+    │      [Figma Make gen ra Source Code FE]
+    │           │
+    └─────┬─────┘
+          │
+          ▼
+[Hành động: Tải Source Code về]
+          │
+          ▼
+[Môi trường AI IDE: VS Code / Antigravity / Claude Code]
+          │
+          ├─> Import Source Code (từ Figma Make)
+          ├─> Import Tài liệu (User Story, Acceptance Criteria)
+          │
+          ▼
+[Vòng lặp "Vibe Code": Prompting AI]
+ (AI đọc tài liệu -> Viết logic -> Thêm tương tác -> Fix lỗi)
+          │
+          ▼
+[BA Review + Demo stakeholder]
+          │
+          ▼ 
+[Kết thúc: Ra được Frontend Prototype hoàn chỉnh đáp ứng dự án]
